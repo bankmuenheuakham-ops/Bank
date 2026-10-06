@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genshin Impact Card Match</title>
+  <link rel="stylesheet" href="game2.css">
+</head>
+<body>
+
+  <h1>⚔️ Genshin Impact Card Match</h1>
+
+  <div class="stats-container">
+    <div>ຈຳນວນເປີດ: <span id="moves">0</span> ຄັ້ງ</div>
+    <div>ຄູ່ທີ່ເກັບໄດ້: <span id="matches">0</span> / 8</div>
+  </div>
+
+  <div class="game-board" id="board"></div>
+
+  <!-- ປຸ່ມ WASD + Enter -->
+  <div class="wasd-controls">
+    <div class="wasd-row">
+      <button class="wasd-btn" id="btn-w">W</button>
+    </div>
+    <div class="wasd-row">
+      <button class="wasd-btn" id="btn-a">A</button>
+      <button class="wasd-btn" id="btn-s">S</button>
+      <button class="wasd-btn" id="btn-d">D</button>
+      <button class="wasd-btn enter-btn" id="btn-select">⏎ Enter</button>
+    </div>
+  </div>
+
+  <button class="btn-restart" onclick="restartGame()">🔄 ເລີ່ມເກມໃໝ່</button>
+
+  <!-- ໜ້າຈໍ Pop-up ຊະນະ -->
+  <div class="win-modal" id="winModal">
+    <h2>🎉 ທ່ານຊະນະແລ້ວ!</h2>
+    <p>ທ່ານໃຊ້ຈຳນວນເປີດທັງໝົດ: <span id="finalMoves">0</span> ຄັ້ງ</p>
+    <button class="btn-restart" onclick="restartGame()">ຫຼິ້ນອີກຄັ້ງ</button>
+  </div>
+
+  <script src="game1.js"></script>
+</body>
+</html>
