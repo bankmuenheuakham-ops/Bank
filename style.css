@@ -1,0 +1,189 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #181c2b, #2b334d);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ece5d8;
+  user-select: none;
+  padding: 20px 0;
+}
+
+h1 {
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+  color: #ffe699;
+}
+
+.stats-container {
+  display: flex;
+  gap: 30px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 25px;
+  border-radius: 30px;
+  border: 1px solid #4a5470;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 440px;
+  width: 90vw;
+  perspective: 1000px;
+}
+
+.card {
+  aspect-ratio: 3 / 4;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.card.selected {
+  outline: 4px solid #ffe699;
+  box-shadow: 0 0 15px #ffe699;
+  transform: scale(1.05);
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card.matched {
+  transform: rotateY(180deg) scale(0.95);
+  cursor: default;
+  opacity: 0.6;
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+
+/* ດ້ານຫຼັງໄພ້ */
+.card-front {
+  background: linear-gradient(135deg, #3d4763, #23293b);
+  border: 2px solid #8c97b2;
+  color: #ffe699;
+}
+
+.card-logo {
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+/* ດ້ານໜ້າໄພ້ (ຮູບ Genshin) */
+.card-back {
+  background-color: #0d111d;
+  transform: rotateY(180deg);
+  border: 2px solid #ffe699;
+}
+
+.card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wasd-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.wasd-row {
+  display: flex;
+  gap: 8px;
+}
+
+.wasd-btn {
+  width: 45px;
+  height: 45px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #181c2b;
+  background-color: #ffe699;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: all 0.1s;
+}
+
+.wasd-btn.enter-btn {
+  width: auto;
+  padding: 0 15px;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.wasd-btn:active {
+  transform: scale(0.92);
+}
+
+.btn-restart {
+  margin-top: 15px;
+  padding: 10px 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #181c2b;
+  background-color: #ffe699;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+
+.btn-restart:hover {
+  background-color: #fff0c2;
+}
+
+.win-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.win-modal h2 {
+  font-size: 2.5rem;
+  color: #ffe699;
+  margin-bottom: 15px;
+}
+
+.win-modal p {
+  font-size: 1.3rem;
+  margin-bottom: 25px;
+}
