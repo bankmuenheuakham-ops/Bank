@@ -1,0 +1,360 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255, 230, 153, 0.18), transparent 40%),
+    radial-gradient(circle at 80% 85%, rgba(110, 140, 255, 0.25), transparent 45%),
+    linear-gradient(135deg, #0f1220, #232b47 55%, #3a2f52);
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ece5d8;
+  user-select: none;
+  padding: 20px 0;
+  overflow-x: hidden;
+}
+
+/* ດາວກະພິບ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 10% 20%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 30% 70%, #ffe699, transparent),
+    radial-gradient(2px 2px at 55% 35%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 75% 60%, #ffe699, transparent),
+    radial-gradient(2px 2px at 90% 15%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 45% 90%, #fff, transparent);
+  background-size: 300px 300px;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.4; }
+  to   { opacity: 1; }
+}
+
+/* ດາວຕົກຫຼາຍດວງ (JS ເປັນຄົນສ້າງ) */
+.shooting-star {
+  position: fixed;
+  top: var(--top);
+  left: var(--left);
+  width: var(--len);
+  height: 2px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 2px;
+  background: linear-gradient(270deg,
+    #fff 0%,
+    rgba(255, 230, 153, 0.6) 40%,
+    rgba(255, 255, 255, 0) 100%);
+  filter: drop-shadow(0 0 6px rgba(255, 230, 153, 0.9));
+  transform: rotate(-35deg);
+  opacity: 0;
+  animation: shoot var(--dur) ease-in forwards;
+}
+
+@keyframes shoot {
+  0%   { opacity: 0; transform: rotate(-35deg) translateX(0); }
+  10%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(-35deg) translateX(calc(-1 * var(--dist))); }
+}
+
+h1 {
+  margin-bottom: 14px;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.55), 0 2px 4px rgba(0, 0, 0, 0.6);
+  color: #ffe699;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.stats-container {
+  display: flex;
+  gap: 30px;
+  font-size: 1.1rem;
+  margin-bottom: 18px;
+  background: rgba(10, 14, 28, 0.55);
+  backdrop-filter: blur(6px);
+  padding: 10px 25px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 230, 153, 0.35);
+  box-shadow: 0 0 18px rgba(255, 230, 153, 0.12);
+}
+
+.stats-container span {
+  color: #ffe699;
+  font-weight: bold;
+}
+
+/* ຈັດວາງກະດານ + ປຸ່ມຂ້າງ */
+.game-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 440px;
+  width: 100%;
+  perspective: 1000px;
+}
+
+.card {
+  aspect-ratio: 3 / 4;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s, box-shadow 0.3s;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.card:hover:not(.flipped):not(.matched) {
+  transform: translateY(-4px);
+}
+
+.card.selected {
+  outline: 3px solid #ffe699;
+  box-shadow: 0 0 20px rgba(255, 230, 153, 0.9);
+  transform: scale(1.05);
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card.matched {
+  transform: rotateY(180deg) scale(0.95);
+  cursor: default;
+  opacity: 0.65;
+  box-shadow: 0 0 14px rgba(120, 255, 170, 0.6);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+/* ດ້ານຫຼັງໄພ່ */
+.card-front {
+  background:
+    radial-gradient(circle at 50% 35%, rgba(255, 230, 153, 0.25), transparent 60%),
+    linear-gradient(135deg, #3d4763, #1c2133);
+  border: 2px solid #c9b27a;
+  color: #ffe699;
+}
+
+.card-front::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255, 230, 153, 0.4);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.card-logo {
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  text-shadow: 0 0 8px rgba(255, 230, 153, 0.7);
+}
+
+/* ດ້ານໜ້າໄພ່ (ຮູບ Genshin) */
+.card-back {
+  background-color: #0d111d;
+  transform: rotateY(180deg);
+  border: 2px solid #ffe699;
+}
+
+.card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ປຸ່ມ WASD */
+.wasd-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.wasd-row {
+  display: flex;
+  gap: 8px;
+}
+
+.wasd-btn {
+  width: 48px;
+  height: 48px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #3a2f12;
+  background: linear-gradient(180deg, #fff0c2, #e3b94f);
+  border: 1px solid #fff6d6;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #a37f24, 0 6px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.1s, box-shadow 0.1s, filter 0.2s;
+}
+
+.wasd-btn:hover {
+  filter: brightness(1.1);
+}
+
+.wasd-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #a37f24, 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.wasd-btn.enter-btn {
+  width: 100%;
+  padding: 0 18px;
+  color: #fff;
+  background: linear-gradient(180deg, #6fd88a, #2f9e55);
+  border: 1px solid #b6f0c6;
+  box-shadow: 0 4px 0 #1d6b39, 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.wasd-btn.enter-btn:active {
+  box-shadow: 0 0 0 #1d6b39, 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ປຸ່ມເລີ່ມໃໝ່ */
+.btn-restart {
+  margin-top: 10px;
+  padding: 11px 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #3a2f12;
+  background: linear-gradient(180deg, #fff0c2, #e3b94f);
+  border: 1px solid #fff6d6;
+  border-radius: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #a37f24, 0 8px 16px rgba(0, 0, 0, 0.45);
+  transition: transform 0.1s, box-shadow 0.1s, filter 0.2s;
+}
+
+.btn-restart:hover {
+  filter: brightness(1.1);
+}
+
+.btn-restart:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #a37f24, 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ເອຟເຟັກຈັບຄູ່ໄດ້: ໄພ່ເດັ້ງ */
+.card.match-pop {
+  animation: matchPop 0.6s ease-out;
+}
+
+@keyframes matchPop {
+  0%   { transform: rotateY(180deg) scale(1); }
+  40%  { transform: rotateY(180deg) scale(1.2);
+         box-shadow: 0 0 30px 10px rgba(255, 230, 153, 0.95); }
+  100% { transform: rotateY(180deg) scale(0.95); }
+}
+
+/* ແສງວາບແລ່ນຜ່ານໄພ່ */
+.card.match-pop .card-back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,
+    transparent 30%, rgba(255, 255, 255, 0.85) 50%, transparent 70%);
+  transform: translateX(-120%);
+  animation: shine 0.7s ease-out 0.1s;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  to { transform: translateX(120%); }
+}
+
+/* ດາວແຕກກະຈາຍ */
+.spark {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 50;
+  background: radial-gradient(circle, #fff 0%, #ffe699 45%, transparent 70%);
+  border-radius: 50%;
+  animation: sparkFly 0.8s ease-out forwards;
+}
+
+@keyframes sparkFly {
+  from { transform: translate(0, 0) scale(1); opacity: 1; }
+  to   { transform: translate(var(--dx), var(--dy)) scale(0.2); opacity: 0; }
+}
+
+/* ໜ້າຕ່າງຊະນະ */
+.win-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(40, 32, 70, 0.9), rgba(0, 0, 0, 0.92));
+  backdrop-filter: blur(4px);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.win-modal h2 {
+  font-size: 2.5rem;
+  color: #ffe699;
+  text-shadow: 0 0 18px rgba(255, 215, 0, 0.7);
+  margin-bottom: 15px;
+}
+
+.win-modal p {
+  font-size: 1.3rem;
+  margin-bottom: 25px;
+}
+
+/* ຈໍນ້ອຍ (ມືຖື): ໃຫ້ປຸ່ມກັບໄປຢູ່ທາງລຸ່ມ */
+@media (max-width: 700px) {
+  .game-layout {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
