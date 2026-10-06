@@ -1,13 +1,13 @@
 
 const genshinCharacters = [
-  { name: 'Raiden Shogun', img: 'Raiden_Shogun_Card.webp' },
-  { name: 'Zhongli', img: 'Zhongli_Card.webp' },
-  { name: 'Columbina', img: 'Columbina_Card.webp' },
-  { name: 'Nahida', img: 'Nahida_Card.webp' },
-  { name: 'Furina', img: 'Furina_Card.webp' },
-  { name: 'vesna', img: 'Vesna_Card.webp' },
-  { name: 'Vodyanitsa', img: 'Vodyanitsa_Card.webp' },
-  { name: 'Odette', img: 'Odette_Card.webp' }
+  { name: 'Raiden Shogun', img: '/Raiden_Shogun_Card.webp' },
+  { name: 'Zhongli', img: '/Zhongli_Card.webp' },
+  { name: 'Columbina', img: '/Columbina_Card.webp' },
+  { name: 'Nahida', img: '/Nahida_Card.webp' },
+  { name: 'Furina', img: '/Furina_Card.webp' },
+  { name: 'vesna', img: '/Vesna_Card.webp' },
+  { name: 'Vodyanitsa', img: '/Vodyanitsa_Card.webp' },
+  { name: 'Odette', img: '/Odette_Card.webp' }
 ];
 
 let cardsData = [];
